@@ -63,15 +63,17 @@ The following results were reported by the original notebook run on its hold-out
 
 **SVM Kernel Comparison**
 
-![SVM Kernel Comparison](assets/svm_kernel_comparison.png)
+SVM Kernel Comparison
 
-[View full-size figure](assets/svm_kernel_comparison.png)
 
-**Classifier Performance Comparison**
 
-![Classifier Performance Comparison](assets/classifier_comparison.png)
+Classifier Performance Comparison
 
-[View full-size figure](assets/classifier_comparison.png)
+
+
+Feature Distributions
+
+
 
 ## Technologies & Libraries
 
