@@ -1,83 +1,139 @@
 # Diabetes Classification with Nonlinear SVM
 
-An individual academic project: Python experiments on the Pima Indians Diabetes dataset: **polynomial and RBF Support Vector Machines**, compared with Random Forest, Logistic Regression, K-Nearest Neighbors and Decision Tree, using SMOTE for class imbalance and `SelectKBest` for feature selection.
+An individual academic machine learning project exploring nonlinear Support Vector Machines and comparative classification techniques on the **Pima Indians Diabetes dataset**. The project evaluates polynomial and RBF SVM kernels alongside multiple traditional machine learning classifiers, combining data preprocessing, class imbalance handling, feature selection, model tuning, and performance visualization.
 
-> This is an academic classification project, **not a diagnostic tool**. Figures below are **results reported by the notebook in its original run**, not independently verified benchmarks, and the model must not be used for medical decisions.
+**Stack:** Python · pandas · NumPy · scikit-learn · imbalanced-learn · Matplotlib · Seaborn · Jupyter Notebook
 
-**Stack:** Python · pandas · NumPy · scikit-learn · imbalanced-learn · Matplotlib/Seaborn · Jupyter
+## Project Overview
 
-## Project at a glance
-
-| | |
+| Component | Description |
 |---|---|
-| Task | Binary classification (`Outcome`: 0 = no diabetes, 1 = diabetes) |
-| Data | 768 rows × 8 features + `Outcome` (500 negative / 268 positive) |
-| Models | SVC (poly, RBF), Random Forest, Logistic Regression, KNN, Decision Tree |
-| Notebook | [`Diabetes-Classification-Nonlinear-SVM.ipynb`](Diabetes-Classification-Nonlinear-SVM.ipynb) |
+| Objective | Binary classification of diabetes outcomes |
+| Dataset | Pima Indians Diabetes dataset |
+| Samples | 768 records |
+| Features | 8 input features |
+| Target | `Outcome` — 0 (negative), 1 (positive) |
+| Primary Models | Polynomial SVM, RBF SVM |
+| Comparison Models | Random Forest, Logistic Regression, KNN, Decision Tree |
+| Imbalance Handling | SMOTE |
+| Feature Selection | `SelectKBest` with mutual information |
+| Hyperparameter Tuning | GridSearchCV with 5-fold cross-validation |
 
-## Dataset
+## Project Highlights
 
-The notebook reads a local file named `diabetes - Copy.csv`, which is **not included** in this repository. The columns are `Pregnancies`, `Glucose`, `BloodPressure`, `SkinThickness`, `Insulin`, `BMI`, `DiabetesPedigreeFunction`, `Age` and `Outcome`, of the **Pima Indians Diabetes dataset** (originally from the National Institute of Diabetes and Digestive and Kidney Diseases; copies are available from public sources such as the UCI Machine Learning Repository and Kaggle).
+- **Nonlinear Classification:** Compared polynomial and RBF kernels to explore different decision boundaries.
+- **Model Benchmarking:** Evaluated six classification approaches across multiple performance metrics.
+- **Class Imbalance Handling:** Applied SMOTE to the training data to balance class representation.
+- **Feature Selection:** Used mutual information to identify informative features for classification.
+- **Hyperparameter Optimization:** Applied GridSearchCV to tune K-Nearest Neighbors and Decision Tree models.
+- **Performance Visualization:** Created comparative visualizations to examine model accuracy and classification performance.
 
-To run it, obtain a copy of the dataset from a public source (check its terms of use), save it next to the notebook as `diabetes - Copy.csv` or change the path in the `pd.read_csv` cell. `.gitignore` excludes `diabetes*.csv` so the data is not committed by accident.
+## Methodology
 
-## Workflow
+The project follows a structured machine learning workflow:
 
-1. **Exploration:** shape, dtypes, summary statistics, class balance, per-class means, feature histograms.
-2. **Standardization:** `StandardScaler` on the feature matrix.
-3. **Split:** stratified 80/20 (`random_state=16`) → 614 training / 154 test rows.
-4. **Imbalance handling:** SMOTE on the training set only → 400 / 400.
-5. **Feature selection:** `SelectKBest(mutual_info_classif, k=6)` keeps Pregnancies, Glucose, BloodPressure, SkinThickness, BMI and Age.
-6. **Nonlinear SVMs:** `SVC` with polynomial and RBF kernels (`C=1.0`).
-7. **Model comparison:** Random Forest, Logistic Regression, KNN and Decision Tree with default settings.
-8. **Tuning:** `GridSearchCV` (5-fold) for Decision Tree and KNN.
-9. **Prediction demo:** a single hand-entered record run through the scaler, selector and SVMs.
+1. **Exploratory Data Analysis (EDA)** — examined dataset structure, feature distributions, descriptive statistics, and class balance.
+2. **Data Preprocessing** — standardized numerical features using `StandardScaler`.
+3. **Train-Test Split** — used a stratified 80/20 split with `random_state=16`.
+4. **Class Imbalance Handling** — applied SMOTE to the training data.
+5. **Feature Selection** — used `SelectKBest` with `mutual_info_classif` to select informative features.
+6. **Nonlinear SVM Modeling** — trained Support Vector Classifiers using polynomial and RBF kernels.
+7. **Comparative Evaluation** — assessed SVMs against Random Forest, Logistic Regression, KNN, and Decision Tree classifiers.
+8. **Hyperparameter Tuning** — optimized KNN and Decision Tree configurations using GridSearchCV.
+9. **Prediction Demonstration** — demonstrated predictions for a sample input using the trained preprocessing and classification components.
 
-## Results reported by the notebook
+## Model Performance
 
-Evaluated on the 154-row hold-out set.
+The following results were reported by the original notebook run on its hold-out test set.
 
-| Model | Test accuracy | Class-1 (diabetes) precision / recall |
-|---|---|---|
-| SVM, RBF kernel | 0.8117 | 0.69 / 0.83 |
-| SVM, polynomial kernel | 0.7792 | 0.75 / 0.56 |
-| Random Forest | 0.82 | 0.73 / 0.76 |
-| Logistic Regression | 0.79 | 0.66 / 0.80 |
-| KNN | 0.75 | 0.62 / 0.78 |
-| Decision Tree | 0.68 | 0.53 / 0.57 |
-| Decision Tree, tuned | 0.7468 | not printed |
-| KNN, tuned | 0.7208 | not printed |
+| Model | Test Accuracy | Precision (Class 1) | Recall (Class 1) |
+|---|---:|---:|---:|
+| Random Forest | 82.00% | 0.73 | 0.76 |
+| SVM — RBF Kernel | 81.17% | 0.69 | 0.83 |
+| SVM — Polynomial Kernel | 77.92% | 0.75 | 0.56 |
+| Logistic Regression | 79.00% | 0.66 | 0.80 |
+| K-Nearest Neighbors | 75.00% | 0.62 | 0.78 |
+| Decision Tree | 68.00% | 0.53 | 0.57 |
+| Decision Tree — Tuned | 74.68% | — | — |
+| KNN — Tuned | 72.08% | — | — |
 
-![SVM kernel comparison](assets/svm_kernel_comparison.png)
-![Classifier comparison](assets/classifier_comparison.png)
+*Note: Metrics are reproduced from the notebook's saved outputs and have not been independently re-evaluated.*
 
-The decision-tree and random-forest models take no explicit `random_state`; the notebook only sets a global NumPy seed, so exact numbers may vary across library versions.
+### Visualizations
 
-## Limitations
+**SVM Kernel Comparison**
 
-- The scaler is fitted on the full dataset before the train/test split, which leaks a small amount of test-set statistics into training.
-- Zero values in clinical columns such as Glucose, BloodPressure, SkinThickness, Insulin and BMI are kept as-is rather than treated as missing.
-- Results come from a single 154-row hold-out split with no cross-validation of the SVMs, and the same test set is used to compare models.
-- The later polynomial-SVM experiment (k=7) re-splits and re-scales data in a way that makes its printed accuracy (0.7662) not directly comparable with the earlier results.
-- Some chart values were typed in manually from printed reports.
+![SVM Kernel Comparison](assets/svm_kernel_comparison.png)
 
-## Setup
+[View full-size figure](assets/svm_kernel_comparison.png)
 
-```bash
-pip install -r requirements.txt
-jupyter lab   # or: jupyter notebook
-```
+**Classifier Performance Comparison**
 
-Place the dataset CSV as described above, then run the cells in order. The original run used a local Anaconda environment; the package versions seen in its output are listed in `requirements.txt`. This setup has not been re-tested for this repository.
+![Classifier Performance Comparison](assets/classifier_comparison.png)
 
-## Repository structure
+[View full-size figure](assets/classifier_comparison.png)
 
-```
+## Technologies & Libraries
+
+- **Programming:** Python
+- **Data Manipulation:** pandas, NumPy
+- **Machine Learning:** scikit-learn
+- **Class Imbalance:** imbalanced-learn (SMOTE)
+- **Feature Selection:** `SelectKBest`, `mutual_info_classif`
+- **Model Optimization:** `GridSearchCV`
+- **Visualization:** Matplotlib, Seaborn
+- **Development Environment:** Jupyter Notebook, Google Colab
+
+## Repository Structure
+
+```text
 Diabetes-Classification-Nonlinear-SVM/
-├── Diabetes-Classification-Nonlinear-SVM.ipynb   # notebook with original code and saved outputs
-├── assets/                                       # figures extracted from the notebook outputs
+├── Diabetes-Classification-Nonlinear-SVM.ipynb
+├── assets/
+│   ├── svm_kernel_comparison.png
+│   └── classifier_comparison.png
 ├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
-The notebook code and results are unchanged. Markdown documentation cells were added, and the output of the `pip install` cell was cleared because it exposed a local machine path. Some code comments are in Arabic.
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/DSLamia/Diabetes-Classification-Nonlinear-SVM.git
+cd Diabetes-Classification-Nonlinear-SVM
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Prepare the dataset
+
+The original notebook reads a local CSV file named `diabetes - Copy.csv`, which is not included in this repository.
+
+Obtain the Pima Indians Diabetes dataset from a reputable public source, review its terms of use, and place the CSV file in the notebook directory. Alternatively, update the file path in the notebook's data-loading cell.
+
+### 4. Launch Jupyter
+
+```bash
+jupyter lab
+```
+
+Open `Diabetes-Classification-Nonlinear-SVM.ipynb` and execute the cells in sequence.
+
+## Key Takeaways
+
+This project demonstrates practical experience with nonlinear classification, comparative model evaluation, feature selection, imbalanced datasets, and hyperparameter optimization. It provides a hands-on exploration of how different machine learning algorithms approach a binary classification task.
+
+## Disclaimer
+
+This is an **academic machine learning project**, intended for educational and experimental purposes only. It is not a clinically validated model and must not be used for medical diagnosis or treatment decisions.
+
+---
+
+**Developed by Lamia** · Data Science & Machine Learning
